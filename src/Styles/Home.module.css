@@ -1,0 +1,6 @@
+@font-face { font-family: cubano-regular; 
+    src: url('../../public/fonts/Cubano-Font-Family/Cubano/Cubano.ttf'); }
+
+h1,h2,h3{
+    font-family: cubano-regular!important;
+}
