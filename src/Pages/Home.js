@@ -1,40 +1,122 @@
 import { Box, Button, Card, CardBody, CardFooter, CardHeader, Flex, Grid, Heading, HStack, Image, Input, Link, Progress, Stack, Text, useNumberInput } from '@chakra-ui/react';
 import React, { useState, useEffect } from 'react';
 import img from '../Images/56.png';
+import { useAccountContext, useUpdateAccountContext } from '../APP/AppContext';
+
+
+import { ethers } from 'ethers';
+import AlphaLions from '../artifacts/contracts/LionNFT.sol/LionNFT.json';
+
+const ALaddress = '0xa9ABD93032E9f2e3E0177bf52aee4c1CC69B8Cec';
+
+
 
 const Home = () => {
 
     const { getInputProps, getIncrementButtonProps, getDecrementButtonProps } =
     useNumberInput({
-      step: 1,
-      defaultValue: 1,
-      min: 1,
-      max: 5,
-      precision: 0,
+        step: 1,
+        defaultValue: 1,
+        min: 1,
+        max: 5,
+        precision: 0,
     })
-
-    
-
-
   const inc = getIncrementButtonProps()
   const dec = getDecrementButtonProps()
   const input = getInputProps()
   const value = input.value;
-  console.log(value);
+//   console.log(value);
+
+  const account = useAccountContext();
+  const setAccount = useUpdateAccountContext();
+  const [error, setError] = useState('');
+  const [data, setData] = useState({});
+  const [owner, setOwner] = useState(false);
+ 
+
+  console.log(account);
+  
+
+  useEffect(() => {
+    fetchData();
+  }, [])
+
+  useEffect(() => {
+    verifiIsOwner();
+    fetchData();
+  }, [account])
+
+  function verifiIsOwner() {
+    if(account) {
+        if('0x3a098505103ccf5e5cc21b60df7aad9daf7a6241' === account[0]){
+            setOwner(true);
+            
+        } else {
+            setOwner(false);
+        }
+    } else{
+        setOwner(false);
+    }
+  }
+
+  async function fetchData() {
+    if(typeof window.ethereum !== 'undefined') {
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const contract = new ethers.Contract(ALaddress, AlphaLions.abi, provider);
+      try {
+        const mintPrice = await contract.mintPrice();
+        const totalSupply = await contract.totalSupply();
+        const object = {"price": String(mintPrice), "totalSupply": String(totalSupply)};
+        setData(object);
+      }
+      catch (err) {
+        setError(err.message);
+      }
+    }
+  }
+  
+
+  async function mint() {
+    if(typeof window.ethereum !== 'undefined') {
+      let account = await window.ethereum.request({method: 'eth_requestAccounts'});
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+      const contract = new ethers.Contract(ALaddress, AlphaLions.abi, signer);
+      try {
+        let overrides = {
+          from: account[0],
+          value: (data.price * value).toString()
+        }
+        const transaction = await contract.publicSaleMint(account[0], value, overrides);
+        await transaction.wait();
+        fetchData();
+      }
+      catch (err) {
+        setError(err.message);
+        console.log(err.message);
+      }
+    }
+  }
+
+  async function withdraw() {
+    if(typeof window.ethereum !== 'undefined') {
+      let account = await window.ethereum.request({method: 'eth_requestAccounts'});
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+      const contract = new ethers.Contract(ALaddress, AlphaLions.abi, signer);
+      try {
+        const transaction = await contract.releaseAll();
+        await transaction.wait();
+      }
+      catch (err) {
+        setError(err.message);
+      }
+    }
+  }
+
 
     return (
         <Box  mb="100px">
-            <Flex justify="space-between" align="center" mb="60px" py="25px"position="sticky" top="0" bg="secondary.900" zIndex="sticky" boxShadow="dark-lg">
-                <Heading bgGradient='linear(to-r, primary.500, primary.800)' bgClip='text' size={{base: 'md', md: "2xl"}}>
-                    My NFT Collection
-                </Heading>
-
-
-                <Button colorScheme="pink">
-                    Connect wallet
-                </Button>
-                
-            </Flex>
 
             <Grid templateColumns={{base: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)'}} gap="60px">
                 <Stack order={{base: '2', md:'1'}} spacing="25px" >
@@ -48,7 +130,7 @@ const Home = () => {
                         </Text>
 
                         <Text fontSize="18px" color="primary.600">
-                            PRICE: <span style={{fontWeight: 'bold', color: 'white'}}>0.002 ETH</span>
+                            PRICE: <span style={{fontWeight: 'bold', color: 'white'}}>0.003 ETH</span>
                         </Text>
 
                     </Flex>
@@ -78,6 +160,13 @@ const Home = () => {
                         </Button>
                     </Link>
 
+                    { owner && (
+                        <>
+                            <Button onClick={withdraw}>withdraw</Button>
+                        </>
+                    )
+                    }
+
                 </Stack>
 
                 <Stack order={{base: '1', md:'2'}} spacing="25px">
@@ -86,10 +175,10 @@ const Home = () => {
                     <Box>
                         <Flex justify="space-between" fontSize="17px">
                             <span>Total minted</span>
-                            <Text><span style={{color: 'white', fontWeight: 'bold'}}>11%</span> (11/333)</Text>
+                            <Text><span style={{color: 'white', fontWeight: 'bold'}}>{((data.totalSupply/333)*100).toFixed(0)}%</span> ({data.totalSupply}/333)</Text>
                         </Flex>
                         <Box mt="5px">
-                            <Progress bg="secondary.800" size="md" value={12} colorScheme="pink" borderRadius="full"/>
+                            <Progress bg="secondary.800" size="md" value={((data.totalSupply/333)*100).toFixed(0)} colorScheme="pink" borderRadius="full"/>
                         </Box>
                     </Box>
 
@@ -106,7 +195,7 @@ const Home = () => {
                         </CardHeader>
 
                         <CardBody>
-                            <Button w="100%" colorScheme="pink">Mint {value}</Button>
+                            <Button w="100%" colorScheme="pink" onClick={mint}>Mint {value}</Button>
                         </CardBody>
                     </Card>
                 </Stack>

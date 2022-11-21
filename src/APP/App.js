@@ -4,8 +4,12 @@ import {
   Box,
   extendTheme
 } from '@chakra-ui/react';
-import Home from './Components/Home';
-import Styles from './Styles/Home.module.css';
+import Home from '../Pages/Home';
+import GlobalContext from './AppContext';
+import Navbar from '../Components/Navbar';
+import { BrowserRouter, Routes,  Route } from 'react-router-dom';
+import Staking from '../Pages/Staking';
+
 
 const colors = {
   primary: {
@@ -51,9 +55,17 @@ const theme = extendTheme({ colors,styles, breakpoints})
 function App() {
   return (
     <ChakraProvider theme={theme}>
-      <Box px={{base: "5%", md:"7%", lg: "10%"}}>
-        <Home/>
-      </Box>
+      <GlobalContext>
+        <BrowserRouter>
+        <Box px={{base: "5%", md:"7%", lg: "10%"}}>
+          <Navbar/>
+        <Routes>
+          <Route path="/" element={<Home />}/>
+          <Route path="/staking" element={<Staking />}/>
+        </Routes>
+        </Box>
+        </BrowserRouter>
+      </GlobalContext>
     </ChakraProvider>
   );
 }
