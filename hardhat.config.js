@@ -24,7 +24,7 @@ module.exports = {
   networks: {
     goerli: {
       url: 'https://goerli.infura.io/v3/Your-Key',
-      accounts: ['Your wallet private Key']
+      accounts: ['Your wallet private-Key']
     }
   }
 };
