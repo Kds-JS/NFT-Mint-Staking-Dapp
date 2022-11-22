@@ -1,7 +1,7 @@
 import { Box, Button, Card, CardBody, CardFooter, CardHeader, Flex, Grid, Heading, HStack, Image, Input, Link, Progress, Stack, Text, useNumberInput } from '@chakra-ui/react';
 import React, { useState, useEffect } from 'react';
 import img from '../Images/56.png';
-import { useAccountContext, useUpdateAccountContext } from '../APP/AppContext';
+import { useAccountContext} from '../APP/AppContext';
 
 
 import { ethers } from 'ethers';
@@ -28,7 +28,6 @@ const Home = () => {
 //   console.log(value);
 
   const account = useAccountContext();
-  const setAccount = useUpdateAccountContext();
   const [error, setError] = useState('');
   const [data, setData] = useState({});
   const [owner, setOwner] = useState(false);
@@ -42,11 +41,11 @@ const Home = () => {
   }, [])
 
   useEffect(() => {
-    verifiIsOwner();
+    verifyIsOwner();
     fetchData();
   }, [account])
 
-  function verifiIsOwner() {
+  function verifyIsOwner() {
     if(account) {
         if('0x3a098505103ccf5e5cc21b60df7aad9daf7a6241' === account[0]){
             setOwner(true);
@@ -140,9 +139,9 @@ const Home = () => {
                         Network: <span>Göerli Testnet</span>
                     </Text>
 
-                    <Link href='https://faucets.chain.link/' _hover={{textDecoration: 'none'}} target="_blank">
+                    <Link href='https://goerli-faucet.pk910.de/' _hover={{textDecoration: 'none'}} target="_blank">
                         <Button colorScheme="cyan">
-                            Claim ETH on Chainlink faucet
+                            Claim ETH on Göerli faucet
                         </Button>
                     </Link>
 
@@ -154,7 +153,7 @@ const Home = () => {
                         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia iusto optio corporis eligendi doloribus tenetur itaque assumenda corrupti accusantium quam, perferendis amet asperiores fugiat? Nostrum ut libero recusandae reprehenderit quas!
                     </Text>
 
-                    <Link href='https://faucets.chain.link/' _hover={{textDecoration: 'none'}} target="_blank">
+                    <Link href='https://testnets.opensea.io/collection/alpha-lions-nft-v2' _hover={{textDecoration: 'none'}} target="_blank">
                         <Button colorScheme="facebook" w="100%">
                             View on Opensea
                         </Button>
@@ -185,7 +184,7 @@ const Home = () => {
                     <Card bg="secondary.700" color="white">
                         <CardHeader fontSize="18px" display="flex" justifyContent="space-between" alignItems="center" flexWrap="wrap" gap="15px">
                         <Text >
-                            Price: <span style={{fontWeight: 'bold'}}>0.002 ETH</span>
+                            Price: <span style={{fontWeight: 'bold'}}>0.003 ETH</span>
                         </Text>
                         <HStack maxW='320px'>
                             <Button {...dec} colorScheme="cyan">-</Button>
