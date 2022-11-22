@@ -11,7 +11,7 @@ const ALaddress = '0xa9ABD93032E9f2e3E0177bf52aee4c1CC69B8Cec';
 
 
 
-const Home = () => {
+const Mint = () => {
 
     const { getInputProps, getIncrementButtonProps, getDecrementButtonProps } =
     useNumberInput({
@@ -203,4 +203,4 @@ const Home = () => {
     );
 };
 
-export default Home;
+export default Mint;

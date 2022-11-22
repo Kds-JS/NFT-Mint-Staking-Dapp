@@ -30,7 +30,7 @@ const Navbar = () => {
 
     return (
         <Flex justify="space-between" align="center" mb="60px" py="25px"position="sticky" top="0" bg="secondary.900" zIndex="sticky" boxShadow="dark-lg">
-        <Heading bgGradient='linear(to-r, primary.500, primary.800)' bgClip='text' size={{base: 'md', md: "2xl"}}>
+        <Heading bgGradient='linear(to-r, primary.500, primary.800)' bgClip='text' size={{base: 'md', md: "xl"}}>
             My NFT Collection
         </Heading>
 
@@ -38,7 +38,7 @@ const Navbar = () => {
 
             <Link to="/">
                 <Text fontSize="25px" color="blue.300" _hover={{color: 'primary.500'}}>
-                  Home
+                  Mint
                 </Text>
               </Link>
 
@@ -80,7 +80,7 @@ const Navbar = () => {
 
                 <Link to="/">
                   <Text fontSize="25px" color="white" _hover={{bg: 'primary.500'}} px="15px">
-                    Home
+                    Mint
                   </Text>
                 </Link>
 

@@ -4,11 +4,12 @@ import {
   Box,
   extendTheme
 } from '@chakra-ui/react';
-import Home from '../Pages/Home';
+import Mint from '../Pages/Mint';
 import GlobalContext from './AppContext';
 import Navbar from '../Components/Navbar';
 import { BrowserRouter, Routes,  Route } from 'react-router-dom';
 import Staking from '../Pages/Staking';
+import '../Styles/Home.css'
 
 
 const colors = {
@@ -60,7 +61,7 @@ function App() {
         <Box px={{base: "5%", md:"7%", lg: "10%"}}>
           <Navbar/>
         <Routes>
-          <Route path="/" element={<Home />}/>
+          <Route path="/" element={<Mint />}/>
           <Route path="/staking" element={<Staking />}/>
         </Routes>
         </Box>
