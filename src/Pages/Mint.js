@@ -169,7 +169,9 @@ const Mint = () => {
                 </Stack>
 
                 <Stack order={{base: '1', md:'2'}} spacing="25px">
-                    <Image src={img} alt="nftImage" borderRadius="3xl" boxShadow="dark-lg"/>
+                    <Flex justify="center">
+                      <Image src={img} alt="nftImage"borderRadius="md" w={{base: 'auto', lg: "300px"}} h="300px" objectFit="contain"/>
+                    </Flex>
 
                     <Box>
                         <Flex justify="space-between" fontSize="17px">

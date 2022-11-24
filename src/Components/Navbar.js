@@ -53,7 +53,7 @@ const Navbar = () => {
       <Box display={{base: 'none', lg: 'block'}}>
 
         { account.length != 0 ? (
-            <Flex color="white"  gap="10px" border="1px" borderColor="secondary.800" borderRadius="5px" py="5px" align="center" px="15px" _hover={{bg: "gray.700"}}>
+            <Flex color="white"  gap="10px" border="1px" borderColor="secondary.700" borderRadius="5px" py="5px" align="center" px="15px" _hover={{bg: "gray.700"}}>
               <Image src={metaLogo} alt="metaLogo" h="16px" borderRadius="2px"/>
               <span>{(account[0]).substr(0,6) + '.....' + (account[0]).substr(38)}</span>
             </Flex>
@@ -76,7 +76,7 @@ const Navbar = () => {
               icon={<FaBars />}
               colorScheme="blue"
             />
-            <MenuList bg="secondary.800" >
+            <MenuList bg="secondary.700" >
 
                 <Link to="/">
                   <Text fontSize="25px" color="white" _hover={{bg: 'primary.500'}} px="15px">
@@ -92,14 +92,14 @@ const Navbar = () => {
                 </Link>
 
                 { account.length != 0 ? (
-                    <Flex mt="15px" bg="gray.400" color="white"  gap="10px" border="1px" borderColor="secondary.800" borderRadius="5px" py="5px" align="center" px="15px" _hover={{bg: "gray.700"}}>
+                    <Flex mt="15px" bg="gray.400" color="white"  gap="10px" border="1px" borderColor="secondary.700" borderRadius="5px" py="5px" align="center" px="5px" mx="15px">
                       <Image src={metaLogo} alt="metaLogo" h="16px" borderRadius="2px"/>
                       <span>{(account[0]).substr(0,6) + '.....' + (account[0]).substr(38)}</span>
                     </Flex>
                   )
                   :
                   (
-                        <Button colorScheme="pink" onClick={getAccounts} w="100%" mt="15px">
+                        <Button colorScheme="pink" onClick={getAccounts} w="60%" mt="15px" mx="15px">
                           Connect wallet
                         </Button>
                   )

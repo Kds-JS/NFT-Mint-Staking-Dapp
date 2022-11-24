@@ -17,43 +17,13 @@ const Staking = () => {
     const [ownerTokenStakedId, setOwnerTokenStakedId] = useState([]);
     const [rewardsAmount, setRewardsAmount] = useState(0);
     const [balance, setBalance] = useState(0);
-    const [owner, setOwner] = useState(false);
 
 
     useEffect(() => {
       fetchStakingData();
       fetchTokenData();
-      verifyIsOwner();
     }, [account])
 
-    function verifyIsOwner() {
-      if(account) {
-          if('0x3a098505103ccf5e5cc21b60df7aad9daf7a6241' === account[0]){
-              setOwner(true);
-              
-          } else {
-              setOwner(false);
-          }
-      } else{
-          setOwner(false);
-      }
-    }
-
-    async function addAdmin() {
-        if(typeof window.ethereum !== 'undefined') {
-          const provider = new ethers.providers.Web3Provider(window.ethereum);
-          const signer = provider.getSigner();
-          const contract = new ethers.Contract(tokenContractAddress, LionToken.abi, signer);
-          try {
-            if(account) {
-              const tokensId = await contract.addAdmin(stakingContractAddress);
-            }
-          }
-          catch (err) {
-            console.log(err.message);
-          }
-        }
-    }
 
     async function fetchStakingData() {
       if(typeof window.ethereum !== 'undefined') {
@@ -118,12 +88,6 @@ const Staking = () => {
         <Box mb="100px">
             <Box >
                 <Text textAlign="center" fontSize="30px" color="white" fontWeight="bold" mb="25px">Your tokens</Text>
-                { owner && (
-                    <>
-                      <Button onClick={addAdmin} ml="25px" mb="25px">AddAdmin</Button>
-                    </>
-                )
-                }
 
                 <Grid templateColumns={{base: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)'}} gap="60px">
                     <Card  textAlign="center" border="1px" borderColor="secondary.800" fontSize="25px" fontWeight="bold">

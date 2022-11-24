@@ -10,6 +10,7 @@ import Navbar from '../Components/Navbar';
 import { BrowserRouter, Routes,  Route } from 'react-router-dom';
 import Staking from '../Pages/Staking';
 import '../Styles/Home.css'
+import Footer from '../Components/Footer';
 
 
 const colors = {
@@ -60,10 +61,11 @@ function App() {
         <BrowserRouter>
         <Box px={{base: "5%", md:"7%", lg: "10%"}}>
           <Navbar/>
-        <Routes>
-          <Route path="/" element={<Mint />}/>
-          <Route path="/staking" element={<Staking />}/>
-        </Routes>
+          <Routes>
+            <Route path="/" element={<Mint />}/>
+            <Route path="/staking" element={<Staking />}/>
+          </Routes>
+          <Footer/>
         </Box>
         </BrowserRouter>
       </GlobalContext>
