@@ -10,8 +10,8 @@
 
 ## Tâches
  - [x] Mint un NFT (ERC721A)
- - [x] Stack un NFT
- - [x] Unstack un NFT
+ - [x] Stake un NFT
+ - [x] Unstake un NFT
  - [x] Reclamer les rewards (token ERC20)
  - [x] Voir ses NFTs sur Opensea
  - [x] Voir ses Tokens sur Metamask
