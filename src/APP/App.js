@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   ChakraProvider,
   Box,
@@ -11,13 +11,14 @@ import { BrowserRouter, Routes,  Route } from 'react-router-dom';
 import Staking from '../Pages/Staking';
 import '../Styles/Home.css'
 import Footer from '../Components/Footer';
+import Loader from './Loader';
 
 
 const colors = {
   primary: {
     900: '#D0CDE0',
     800: '#636ED7',
-    700: '##7CC4F4',
+    700: '#7CC4F4',
     600: '#D4618D',
     500: '#D3336D'
   },
@@ -55,7 +56,21 @@ const breakpoints = {
 const theme = extendTheme({ colors,styles, breakpoints})
 
 function App() {
-  return (
+  const [loader, setLoader] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoader(false);
+    }, 3000)
+  }, [])
+
+
+  
+
+
+  return loader ? (
+    <Loader/>
+  ) : (
     <ChakraProvider theme={theme}>
       <GlobalContext>
         <BrowserRouter>
