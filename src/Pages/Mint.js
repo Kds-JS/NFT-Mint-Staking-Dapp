@@ -149,8 +149,7 @@ const Mint = () => {
 
                     <Text>
                         Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quos pariatur similique sequi. Voluptatem voluptate quod architecto voluptates deserunt, tenetur laudantium at veniam vitae. Dolorem sequi nobis eaque iusto, ullam ipsa.
-                        <br /><br />
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia iusto optio corporis eligendi doloribus tenetur itaque assumenda corrupti accusantium quam, perferendis amet asperiores fugiat? Nostrum ut libero recusandae reprehenderit quas!
+                        
                     </Text>
 
                     <Link href='https://testnets.opensea.io/collection/alpha-lions-nft-v2' _hover={{textDecoration: 'none'}} target="_blank">
