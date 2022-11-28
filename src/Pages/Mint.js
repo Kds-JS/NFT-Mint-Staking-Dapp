@@ -1,8 +1,8 @@
 import { Box, Button, Card, CardBody, CardFooter, CardHeader, Flex, Grid, Heading, HStack, Image, Input, Link, Progress, Stack, Text, useNumberInput } from '@chakra-ui/react';
 import React, { useState, useEffect } from 'react';
 import img from '../Images/56.png';
-import { useAccountContext} from '../APP/AppContext';
 
+import { useAccount } from 'wagmi';
 
 import { ethers } from 'ethers';
 import AlphaLions from '../artifacts/contracts/LionNFT.sol/LionNFT.json';
@@ -27,27 +27,19 @@ const Mint = () => {
   const value = input.value;
 //   console.log(value);
 
-  const account = useAccountContext();
-  const [error, setError] = useState('');
+  const { address, isConnecting, isDisconnected} = useAccount();
+
   const [data, setData] = useState({});
   const [owner, setOwner] = useState(false);
- 
-
-  console.log(account);
-  
-
-  useEffect(() => {
-    fetchData();
-  }, [])
 
   useEffect(() => {
     verifyIsOwner();
     fetchData();
-  }, [account])
+  }, [address])
 
   function verifyIsOwner() {
-    if(account) {
-        if('0x3a098505103ccf5e5cc21b60df7aad9daf7a6241' === account[0]){
+    if(address) {
+        if('0x3A098505103CcF5e5Cc21B60DF7aaD9DaF7a6241' === address){
             setOwner(true);
             
         } else {
@@ -69,7 +61,7 @@ const Mint = () => {
         setData(object);
       }
       catch (err) {
-        setError(err.message);
+        console.log(err.message);
       }
     }
   }
@@ -77,21 +69,20 @@ const Mint = () => {
 
   async function mint() {
     if(typeof window.ethereum !== 'undefined') {
-      let account = await window.ethereum.request({method: 'eth_requestAccounts'});
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();
       const contract = new ethers.Contract(ALaddress, AlphaLions.abi, signer);
       try {
         let overrides = {
-          from: account[0],
+          from: address,
           value: (data.price * value).toString()
         }
-        const transaction = await contract.publicSaleMint(account[0], value, overrides);
+        const transaction = await contract.publicSaleMint(address, value, overrides);
         await transaction.wait();
         fetchData();
       }
       catch (err) {
-        setError(err.message);
+        console.log(err.message);
         console.log(err.message);
       }
     }
@@ -99,7 +90,6 @@ const Mint = () => {
 
   async function withdraw() {
     if(typeof window.ethereum !== 'undefined') {
-      let account = await window.ethereum.request({method: 'eth_requestAccounts'});
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();
       const contract = new ethers.Contract(ALaddress, AlphaLions.abi, signer);
@@ -108,7 +98,7 @@ const Mint = () => {
         await transaction.wait();
       }
       catch (err) {
-        setError(err.message);
+        console.log(err.message);
       }
     }
   }
@@ -195,7 +185,7 @@ const Mint = () => {
                         </CardHeader>
 
                         <CardBody>
-                            <Button w="100%" colorScheme="pink" onClick={mint}>Mint {value}</Button>
+                            <Button w="100%" colorScheme="pink" onClick={mint} disabled={isDisconnected && true}>Mint {value}</Button>
                         </CardBody>
                     </Card>
                 </Stack>

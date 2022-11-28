@@ -1,19 +1,22 @@
 import React, {useState, useEffect} from 'react';
-import { useAccountContext, useUpdateAccountContext } from '../APP/AppContext';
+
 
 import { ethers } from 'ethers';
+import { useAccount } from 'wagmi';
+
 import LionStaking from '../artifacts/contracts/LionStaking.sol/LionStaking.json';
 import LionToken from '../artifacts/contracts/LionToken.sol/LionToken.json';
 import { Box, Button, Card, CardBody, CardHeader, Flex, Grid, Text } from '@chakra-ui/react';
 import UnstakedNFT from '../Components/UnstakedNFT';
 import StakedNFT from '../Components/StakedNFT';
 
+
 const tokenContractAddress = '0x2f0AE90811f0367b388c3196dE9AcfB5f46ba9c5';
 const stakingContractAddress = '0x234466b0B29062228cA12510Cd1b17c0F1a414Ab';
 
 const Staking = () => {
 
-    const account = useAccountContext();
+    const { address, isConnecting, isDisconnected} = useAccount();
     const [ownerTokenStakedId, setOwnerTokenStakedId] = useState([]);
     const [rewardsAmount, setRewardsAmount] = useState(0);
     const [balance, setBalance] = useState(0);
@@ -22,16 +25,24 @@ const Staking = () => {
     useEffect(() => {
       fetchStakingData();
       fetchTokenData();
-    }, [account])
+      updateData();
+    }, [address])
 
+    const updateData = () => {
+      if(isDisconnected) {
+      setOwnerTokenStakedId([]);
+      setRewardsAmount(0);
+      setBalance(0);
+      }
+    }
 
     async function fetchStakingData() {
       if(typeof window.ethereum !== 'undefined') {
         const provider = new ethers.providers.Web3Provider(window.ethereum);
         const contract = new ethers.Contract(stakingContractAddress, LionStaking.abi, provider);
         try {
-          if(account) {
-            const tokensId = await contract.tokenStakedByOwner(account[0]);
+          if(address) {
+            const tokensId = await contract.tokenStakedByOwner(address);
             let ownerTokenStakedId = [];
               tokensId.map((tokenId) => (
                   ownerTokenStakedId.push(parseInt(tokenId._hex))
@@ -39,7 +50,7 @@ const Staking = () => {
             
               setOwnerTokenStakedId(ownerTokenStakedId);
 
-              const rewardsAmount = await contract.getRewardsAmount(account[0], ownerTokenStakedId); 
+              const rewardsAmount = await contract.getRewardsAmount(address, ownerTokenStakedId); 
               setRewardsAmount((parseInt(rewardsAmount._hex) / 10 ** 18).toFixed(2))
           }
         }
@@ -55,8 +66,8 @@ const Staking = () => {
           const provider = new ethers.providers.Web3Provider(window.ethereum);
           const contract = new ethers.Contract(tokenContractAddress, LionToken.abi, provider);
           try {
-            if(account) {
-              const accountBalance = await contract.balanceOf(account[0]);
+            if(address) {
+              const accountBalance = await contract.balanceOf(address);
               setBalance((parseInt(accountBalance._hex) / 10 ** 18).toFixed(2));
             }
           }
@@ -121,7 +132,7 @@ const Staking = () => {
                 </Grid>
 
                 <Box textAlign="center" mt="25px" >
-                    <Button colorScheme="pink" borderRadius="full" w={{base: "100%", md:"25%"}} fontSize="25px" py="7" onClick={() => claim(ownerTokenStakedId)}>
+                    <Button colorScheme="pink" borderRadius="full" w={{base: "100%", md:"25%"}} fontSize="25px" py="7" onClick={() => claim(ownerTokenStakedId)} disabled={isDisconnected && true}>
                         Claim reward
                     </Button>
                 </Box>

@@ -5,7 +5,6 @@ import {
   extendTheme
 } from '@chakra-ui/react';
 import Mint from '../Pages/Mint';
-import GlobalContext from './AppContext';
 import Navbar from '../Components/Navbar';
 import { BrowserRouter, Routes,  Route } from 'react-router-dom';
 import Staking from '../Pages/Staking';
@@ -13,6 +12,44 @@ import '../Styles/Home.css'
 import Footer from '../Components/Footer';
 import Loader from './Loader';
 
+import '@rainbow-me/rainbowkit/styles.css';
+import {
+  getDefaultWallets,
+  RainbowKitProvider,
+  darkTheme,
+} from '@rainbow-me/rainbowkit';
+import {
+  chain,
+  configureChains,
+  createClient,
+  WagmiConfig,
+} from 'wagmi';
+import { alchemyProvider } from 'wagmi/providers/alchemy';
+import { publicProvider } from 'wagmi/providers/public';
+
+// Add more wallet connexion with rainbowkit
+
+const { chains, provider } = configureChains(
+  [chain.mainnet, chain.goerli, chain.hardhat],
+  [
+    // alchemyProvider({ apiKey: process.env.ALCHEMY_ID }),
+    publicProvider()
+  ]
+);
+
+const { connectors } = getDefaultWallets({
+  appName: 'My RainbowKit App',
+  chains
+});
+
+const wagmiClient = createClient({
+  autoConnect: true,
+  connectors,
+  provider
+})
+// Add more wallet connexion with rainbowkit
+
+// Custom Chakra default theme 
 
 const colors = {
   primary: {
@@ -55,13 +92,15 @@ const breakpoints = {
 
 const theme = extendTheme({ colors,styles, breakpoints})
 
+// Custom Chakra default theme 
+
 function App() {
   const [loader, setLoader] = useState(true);
 
   useEffect(() => {
     setTimeout(() => {
       setLoader(false);
-    }, 3000)
+    }, 1000)
   }, [])
 
 
@@ -71,20 +110,26 @@ function App() {
   return loader ? (
     <Loader/>
   ) : (
-    <ChakraProvider theme={theme}>
-      <GlobalContext>
-        <BrowserRouter>
-        <Box px={{base: "5%", md:"7%", lg: "10%"}}>
-          <Navbar/>
-          <Routes>
-            <Route path="/" element={<Mint />}/>
-            <Route path="/staking" element={<Staking />}/>
-          </Routes>
-          <Footer/>
-        </Box>
-        </BrowserRouter>
-      </GlobalContext>
-    </ChakraProvider>
+        <ChakraProvider theme={theme}>
+            <WagmiConfig client={wagmiClient}>
+              <RainbowKitProvider chains={chains} theme={darkTheme({
+                accentColor: '#B83280',
+                accentColorForeground: 'white',
+                borderRadius: 'medium',
+              })}>
+                <BrowserRouter>
+                <Box px={{base: "5%", md:"7%", lg: "10%"}}>
+                  <Navbar/>
+                  <Routes>
+                    <Route path="/" element={<Mint />}/>
+                    <Route path="/staking" element={<Staking />}/>
+                  </Routes>
+                  <Footer/>
+                </Box>
+                </BrowserRouter>
+              </RainbowKitProvider>
+            </WagmiConfig>
+        </ChakraProvider>
   );
 }
 

@@ -9,6 +9,7 @@
     "@nomiclabs/hardhat-ethers": "^2.2.1",
     "@nomiclabs/hardhat-waffle": "^2.0.3",
     "@openzeppelin/contracts": "^4.8.0",
+    "@rainbow-me/rainbowkit": "^0.8.0",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.0.1",
     "@testing-library/user-event": "^14.1.0",
@@ -22,6 +23,7 @@
     "react-icons": "^3.0.0",
     "react-router-dom": "^6.4.3",
     "react-scripts": "5.0.1",
+    "wagmi": "^0.8.6",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

@@ -2,6 +2,7 @@ import { Box, Flex, Grid, Image, Card, CardBody, CardFooter, Text, Button } from
 import React from 'react';
 
 import { ethers } from 'ethers';
+import { useAccount } from 'wagmi';
 
 import LionStaking from '../artifacts/contracts/LionStaking.sol/LionStaking.json';
 
@@ -11,6 +12,7 @@ const nftpng = "https://ipfs.io/ipfs/bafybeifo4chypbuqngrzhterzn6bxu2lxlaqhi6u66
 
 const StakedNFT = ({ownerTokenStakedId}) => {
     
+    const { address, isConnecting, isDisconnected } = useAccount();
 
     async function unstacke(tokensId) {
         if(typeof window.ethereum !== 'undefined') {
@@ -32,7 +34,7 @@ const StakedNFT = ({ownerTokenStakedId}) => {
         <Box border="1px" borderColor="secondary.800" borderRadius="15px"  px="20px" pb="25px">
             <Flex justifyContent="space-between" alignItems="center" wrap="wrap" gap="25px" my="25px">
                 <Text textAlign="center" fontSize="30px" color="white" fontWeight="bold" >Your Staked NFTs</Text>
-                <Button colorScheme='blue' onClick={() => unstacke(ownerTokenStakedId)}>Unstaked All</Button>
+                {!isDisconnected && <Button colorScheme='blue' onClick={() => unstacke(ownerTokenStakedId)}>Unstaked All</Button>}
             </Flex>
 
             <Grid templateColumns={{base: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)'}} gap="20px">

@@ -2,10 +2,11 @@ import { Box, Flex, Grid, Image, Card, CardBody, CardFooter, Text, Button } from
 import React, {useEffect, useState} from 'react';
 
 import { ethers } from 'ethers';
+import { useAccount } from 'wagmi';
 
 import LionStaking from '../artifacts/contracts/LionStaking.sol/LionStaking.json';
 import LionNft from '../artifacts/contracts/LionNFT.sol/LionNFT.json';
-import { useAccountContext } from '../APP/AppContext';
+
 
 const stakingContractAddress = '0x234466b0B29062228cA12510Cd1b17c0F1a414Ab'; 
 
@@ -15,13 +16,20 @@ const nftpng = "https://ipfs.io/ipfs/bafybeifo4chypbuqngrzhterzn6bxu2lxlaqhi6u66
 
 const UnstakedNFT = () => {
 
-    const account = useAccountContext();
+    const { address, isConnecting, isDisconnected } = useAccount();
     const [ownerTokensId, setOwnerTokensId] = useState([]);
-    console.log(ownerTokensId);
+
 
     useEffect(() => {
         fetchNftData();
-    }, [account])
+        updateData();
+    }, [address])
+
+    const updateData = () => {
+      if(isDisconnected) {
+        setOwnerTokensId([]);
+      }
+    }
 
     async function fetchNftData() {
         if(typeof window.ethereum !== 'undefined') {
@@ -29,17 +37,14 @@ const UnstakedNFT = () => {
           const contract = new ethers.Contract(nftContractAddress, LionNft.abi, provider);
           try {
     
-            if(account) {
-              const tokensId = await contract.tokensOfOwner(account[0]);
+            if(address) {
+              const tokensId = await contract.tokensOfOwner(address);
               let ownerTokensId = [];
                 tokensId.map((tokenId) => (
                     ownerTokensId.push(parseInt(tokenId._hex))
                 ))
               
               setOwnerTokensId(ownerTokensId); 
-
-              const ownerid = await contract.ownerOf(7);
-              console.log(ownerid);
             }
           }
           catch (err) {
@@ -55,8 +60,8 @@ const UnstakedNFT = () => {
           const contract = new ethers.Contract(nftContractAddress, LionNft.abi, provider);
           const newContract = new ethers.Contract(nftContractAddress, LionNft.abi, signer);
           try {
-            if(account) {
-                const isApprovedForAll = await contract.isApprovedForAll(account[0],stakingContractAddress);
+            if(address) {
+                const isApprovedForAll = await contract.isApprovedForAll(address,stakingContractAddress);
                 if (!isApprovedForAll) {
                     const approval = await newContract.setApprovalForAll(stakingContractAddress, true);
                 }
@@ -90,7 +95,7 @@ const UnstakedNFT = () => {
         <Box border="1px" borderColor="secondary.800" borderRadius="15px"  px="20px" pb="25px">
             <Flex justifyContent="space-between" alignItems="center" wrap="wrap" gap="25px" my="25px">
                 <Text textAlign="center" fontSize="30px" color="white" fontWeight="bold" >Your Unstaked NFTs</Text>
-                <Button colorScheme='teal' onClick={() => stake(ownerTokensId)}>Staked All</Button>
+                {!isDisconnected && <Button colorScheme='teal' onClick={() => stake(ownerTokensId)}>Staked All</Button>}
             </Flex>
 
             <Grid templateColumns={{base: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)'}} gap="20px">
