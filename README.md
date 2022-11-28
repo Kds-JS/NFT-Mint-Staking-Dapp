@@ -2,7 +2,7 @@
 
 [![crypto App](./Asset/mint.png)](https://twitter.com/kds_JS)
 
-[![crypto App](./src/Asset/staking.png)](https://twitter.com/kds_JS)
+[![crypto App](./Asset/staking.png)](https://twitter.com/kds_JS)
 
 ### Smart Contract, page de mint et page de staking d'une collection NFT
 ### Le Smart Contract a été deployé sur le reseau:  <b>Göerli Testnet</b>
@@ -10,8 +10,8 @@
 
 ## Tâches
  - [x] Mint un NFT (ERC721A)
- - [x] Stack un NFT
- - [x] Unstack un NFT
+ - [x] Stake un NFT
+ - [x] Unstake un NFT
  - [x] Reclamer les rewards (token ERC20)
  - [x] Voir ses NFTs sur Opensea
  - [x] Voir ses Tokens sur Metamask
