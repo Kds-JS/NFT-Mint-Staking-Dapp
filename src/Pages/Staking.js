@@ -7,8 +7,8 @@ import { useAccount } from 'wagmi';
 import LionStaking from '../artifacts/contracts/LionStaking.sol/LionStaking.json';
 import LionToken from '../artifacts/contracts/LionToken.sol/LionToken.json';
 import { Box, Button, Card, CardBody, CardHeader, Flex, Grid, Text } from '@chakra-ui/react';
-import UnstakedNFT from '../Components/UnstakedNFT';
-import StakedNFT from '../Components/StakedNFT';
+import UnstakedNFT from 'Components/UnstakedNFT';
+import StakedNFT from 'Components/StakedNFT';
 
 
 const tokenContractAddress = '0x2f0AE90811f0367b388c3196dE9AcfB5f46ba9c5';

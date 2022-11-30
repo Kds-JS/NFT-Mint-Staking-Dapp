@@ -4,12 +4,13 @@ import {
   Box,
   extendTheme
 } from '@chakra-ui/react';
-import Mint from '../Pages/Mint';
-import Navbar from '../Components/Navbar';
 import { BrowserRouter, Routes,  Route } from 'react-router-dom';
-import Staking from '../Pages/Staking';
-import '../Styles/Home.css'
-import Footer from '../Components/Footer';
+
+import Mint from 'Pages/Mint';
+import Staking from 'Pages/Staking';
+import 'Styles/Home.css';
+import Navbar from 'Components/Navbar';
+import Footer from 'Components/Footer';
 import Loader from './Loader';
 
 import '@rainbow-me/rainbowkit/styles.css';
