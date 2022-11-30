@@ -13,11 +13,19 @@
  - [x] Stake un NFT
  - [x] Unstake un NFT
  - [x] Reclamer les rewards (token ERC20)
+ - [x] Se connecter avec plusieurs wallets differents
  - [x] Voir ses NFTs sur Opensea
  - [x] Voir ses Tokens sur Metamask
  
 
 ## [LIVE ICI](https://nft-mint-staking-dapp.vercel.app/)
+## [View on Opensea](https://testnets.opensea.io/collection/alpha-lions-nft-v2)
+## [Claim ETH on Göerli faucet](https://goerli-faucet.pk910.de/)
+
+## Contract Address
+ - Nft-ERC721A Contract Address: <b>0xa9ABD93032E9f2e3E0177bf52aee4c1CC69B8Cec<b/>
+ - Token-ERC20 Contract Address: <b>0x2f0AE90811f0367b388c3196dE9AcfB5f46ba9c5<b/>
+ - Nft-Staking Contract Address: <b>0x234466b0B29062228cA12510Cd1b17c0F1a414Ab<b/>
 
 ## Technologies utilisés 
  - Solidity
