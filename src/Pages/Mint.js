@@ -33,20 +33,27 @@ const Mint = () => {
   const [owner, setOwner] = useState(false);
 
   useEffect(() => {
-    verifyIsOwner();
+    getContractOwner();
     fetchData();
   }, [address])
 
-  function verifyIsOwner() {
-    if(address) {
-        if('0x3A098505103CcF5e5Cc21B60DF7aaD9DaF7a6241' === address){
+  async function getContractOwner() {
+    if(typeof window.ethereum !== 'undefined') {
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const contract = new ethers.Contract(ALaddress, AlphaLions.abi, provider);
+      try {
+       if(address) {
+          const owner = await contract.owner();
+          if(owner.toLowerCase() === address.toLowerCase()) {
             setOwner(true);
-            
-        } else {
+          } else {
             setOwner(false);
-        }
-    } else{
-        setOwner(false);
+          }
+       }
+      }
+      catch (err) {
+        console.log(err.message);
+      }
     }
   }
 

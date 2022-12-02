@@ -11,7 +11,7 @@ import UnstakedNFT from 'Components/UnstakedNFT';
 import StakedNFT from 'Components/StakedNFT';
 
 
-const tokenContractAddress = '0x2f0AE90811f0367b388c3196dE9AcfB5f46ba9c5';
+const tokenContractAddress = 'term';
 const stakingContractAddress = '0x234466b0B29062228cA12510Cd1b17c0F1a414Ab';
 
 const Staking = () => {
